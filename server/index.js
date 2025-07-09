@@ -4,7 +4,10 @@ const mongoDB = require('./config/db');
 const app = express();
 const taskRoutes = require('./routes/TaskRoute');
 
-app.use(cors());
+app.use(cors({
+  origin: 'https://task-manager-1-me06.onrender.com'
+  
+}));
 app.use(express.json())
 
 mongoDB();
