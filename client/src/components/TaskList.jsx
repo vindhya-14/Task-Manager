@@ -28,13 +28,14 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
   };
 
   const getPriorityBadge = (priority) => {
-    const style = {
-      high: 'bg-red-100 text-red-600',
-      medium: 'bg-yellow-100 text-yellow-700',
-      low: 'bg-green-100 text-green-700',
+    const baseStyle = "text-xs px-2 py-1 rounded-full font-semibold capitalize";
+    const styles = {
+      high: `bg-red-100 text-red-700 border border-red-300`,
+      medium: `bg-yellow-100 text-yellow-700 border border-yellow-300`,
+      low: `bg-green-100 text-green-700 border border-green-300`,
     };
     return (
-      <span className={`text-xs px-2 py-1 rounded-full font-medium ${style[priority] || 'bg-gray-100 text-gray-700'}`}>
+      <span className={`${baseStyle} ${styles[priority] || 'bg-gray-100 text-gray-600 border border-gray-300'}`}>
         {priority}
       </span>
     );
@@ -48,13 +49,13 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
         </div>
       ) : (
         tasks.map((task) => (
-          <div key={task.id} className="p-4 hover:bg-gray-50 transition">
+          <div key={task.id} className="p-4 hover:bg-gray-50 transition rounded-lg">
             {editId === task.id ? (
               <div className="space-y-3">
                 <input
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-indigo-500"
+                  className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <div className="flex gap-3">
                   <select
@@ -76,12 +77,15 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
                   </select>
                 </div>
                 <div className="flex justify-end gap-2">
-                  <button onClick={handleCancel} className="text-gray-500 hover:underline">
+                  <button
+                    onClick={handleCancel}
+                    className="text-sm px-4 py-2 rounded-md border text-gray-600 hover:bg-gray-100"
+                  >
                     Cancel
                   </button>
                   <button
                     onClick={handleSave}
-                    className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                    className="text-sm px-4 py-2 rounded-md bg-indigo-600 text-white hover:bg-indigo-700"
                   >
                     Save
                   </button>
@@ -89,7 +93,7 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
               </div>
             ) : (
               <div className="flex justify-between items-start">
-                <div className="flex gap-3 items-start">
+                <div className="flex items-start gap-4">
                   <button
                     onClick={() =>
                       onUpdate(task.id, {
@@ -98,7 +102,7 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
                         priority: task.priority,
                       })
                     }
-                    className={`h-5 w-5 border rounded-full flex items-center justify-center ${
+                    className={`mt-1 h-5 w-5 rounded-full border flex items-center justify-center ${
                       task.status === 'Completed' ? 'bg-green-500 border-green-500' : 'border-gray-300'
                     }`}
                   >
@@ -112,28 +116,33 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
                       </svg>
                     )}
                   </button>
+
                   <div>
                     <p
-                      className={`font-medium ${
+                      className={`font-semibold ${
                         task.status === 'Completed' ? 'line-through text-gray-400' : 'text-gray-800'
                       }`}
                     >
                       {task.title}
                     </p>
-                    <div className="text-xs text-gray-500">
-                      {getPriorityBadge(task.priority)} · {format(new Date(task.createdAt), 'MMM d, yyyy • h:mm a')}
+                    <div className="text-sm mt-1 flex items-center gap-2 text-gray-500">
+                      {getPriorityBadge(task.priority)}
+                      <span className="text-xs">{format(new Date(task.createdAt), 'MMM d, yyyy • h:mm a')}</span>
                     </div>
                   </div>
                 </div>
-                <div className="flex gap-2">
+
+                <div className="flex gap-3 mt-1">
                   <button
                     onClick={() => handleEdit(task)}
+                    title="Edit Task"
                     className="text-blue-500 hover:text-blue-700 transition"
                   >
                     ✏️
                   </button>
                   <button
                     onClick={() => onDelete(task.id)}
+                    title="Delete Task"
                     className="text-red-500 hover:text-red-700 transition"
                   >
                     🗑️
