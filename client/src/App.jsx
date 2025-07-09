@@ -6,6 +6,8 @@ import StatsPanel from './components/StatsPanel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const BASE_URL = 'https://task-manager-hc0x.onrender.com/api/tasks';
+
 const App = () => {
   const [tasks, setTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +15,7 @@ const App = () => {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/tasks');
+      const res = await axios.get(BASE_URL);
       setTasks(res.data);
       setIsLoading(false);
     } catch {
@@ -28,7 +30,7 @@ const App = () => {
 
   const addTask = async (task) => {
     try {
-      const res = await axios.post('http://localhost:5000/api/tasks', task);
+      const res = await axios.post(BASE_URL, task);
       setTasks([...tasks, res.data]);
       toast.success('🎉 Task added!');
     } catch {
@@ -38,7 +40,7 @@ const App = () => {
 
   const updateTask = async (id, updatedTask) => {
     try {
-      const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, updatedTask);
+      const res = await axios.put(`${BASE_URL}/${id}`, updatedTask);
       setTasks(tasks.map((task) => (task.id === id ? res.data : task)));
       toast.success('✅ Task updated!');
     } catch {
@@ -48,7 +50,7 @@ const App = () => {
 
   const deleteTask = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+      await axios.delete(`${BASE_URL}/${id}`);
       setTasks(tasks.filter((task) => task.id !== id));
       toast.success('🗑️ Task deleted');
     } catch {
