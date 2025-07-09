@@ -10,7 +10,7 @@ app.use(cors({
 }));
 app.use(express.json())
 
-mongoDB();
+// mongoDB();
 
 app.use('/api/tasks',taskRoutes)
 
