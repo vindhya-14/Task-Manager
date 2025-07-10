@@ -12,6 +12,10 @@ app.use(express.json())
 
 // mongoDB();
 
+app.get('/api/ping', (req, res) => {
+  res.send('Server is awake!');
+});
+
 app.use('/api/tasks',taskRoutes)
 
 app.listen(5000, () => {
